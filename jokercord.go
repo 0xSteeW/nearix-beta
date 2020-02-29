@@ -7,16 +7,19 @@ package main
 
 import (
 	"bufio"
+	"crypto/rand"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
+	"math/big"
 	"net/http"
 	"os"
 	"os/signal"
 	"runtime"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/blang/semver"
 	"github.com/bwmarrin/discordgo"
@@ -64,6 +67,17 @@ func writeLangYaml(path string, langStruct *LangConfig) {
 	output, err := yaml.Marshal(langStruct)
 	logErr(err)
 	writeFile(path, output)
+}
+
+func genRandNum(min, max int64) int64 {
+	bg := big.NewInt(max - min)
+
+	n, err := rand.Int(rand.Reader, bg)
+	if err != nil {
+		panic(err)
+	}
+
+	return n.Int64() + min
 }
 
 // DownloadFile will download a url to a local file.
@@ -195,7 +209,10 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 			for _, embed := range embeds {
 				if embed.Image != nil {
 					pokename := receive(embed.Image.URL)
-					session.ChannelMessageSend(message.ChannelID, "p!catch "+pokename)
+					time.Sleep(time.Duration(genRandNum(3, 7)) * time.Second)
+					if pokename != "" {
+						session.ChannelMessageSend(message.ChannelID, "poke?catch "+pokename)
+					}
 				}
 			}
 		}
