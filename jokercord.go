@@ -211,7 +211,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 					pokename := receive(embed.Image.URL)
 					time.Sleep(time.Duration(genRandNum(3, 7)) * time.Second)
 					if pokename != "" {
-						session.ChannelMessageSend(message.ChannelID, "poke?catch "+pokename)
+						session.ChannelMessageSend(message.ChannelID, "p!catch "+pokename)
 					}
 				}
 			}
