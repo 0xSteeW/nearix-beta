@@ -1,8 +1,8 @@
 token: 
 constants:
   pokecordid: ""
-  language: ES
-  first: false
+  language: EN
+  first: true 
 version: 2.3.0
 session:
   guilds:
