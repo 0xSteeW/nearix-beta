@@ -5,11 +5,8 @@ package main
 
 import (
 	"image"
-	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/corona10/goimagehash"
@@ -35,8 +32,7 @@ func receive(url string) string {
 func Download(url string) *image.Image {
 	response, err := http.Get(url)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return nil
 	}
 	defer response.Body.Close()
 	// Body is a io ReadCloser, so we can pass it to image.Decode, which receives an io.Reader
@@ -66,9 +62,12 @@ func Compare(hash string, pokemonStruct map[string]string) string {
 
 // Hash grabs value from Download
 func Hash(imageDecoder *image.Image) string {
+	if imageDecoder == nil {
+		return ""
+	}
 	hash, err := goimagehash.PerceptionHash(*imageDecoder)
 	if err != nil {
-		log.Panic("Could not get the hash of last pokemon")
+		return ""
 	}
 	return hash.ToString()
 }

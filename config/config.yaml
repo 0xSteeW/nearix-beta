@@ -1,8 +1,142 @@
-token: 
+token: NDkxMjM2MDgzMDYxODgyODkx.X1Ya_g.cmpCQBTcdHO8c0XvHR2VyRTvVv0
 constants:
-  pokecordid: ""
+  pokecordid: "665301904791699476"
   language: EN
-  first: true 
+  first: false
 version: 2.3.0
 session:
   guilds:
+  - id: "692600922274136117"
+    name: Back Benchers
+    prefix: p
+    delay: 5
+    enabled: true
+    channels:
+    - id: "692610022160465980"
+      name: minecraft
+      delay: 20
+      enabled: false
+    - id: "697686700541083688"
+      name: maths
+      delay: 20
+      enabled: false
+    - id: "702221506050130042"
+      name: music♪♫♪
+      delay: 20
+      enabled: false
+    - id: "705351103717310495"
+      name: other-subjects
+      delay: 20
+      enabled: false
+    - id: "737589361586995311"
+      name: french
+      delay: 20
+      enabled: false
+    - id: "737638386638127146"
+      name: precautions
+      delay: 20
+      enabled: false
+    - id: "737942501159206962"
+      name: sst
+      delay: 20
+      enabled: false
+    - id: "738226918306086942"
+      name: science
+      delay: 20
+      enabled: false
+    - id: "738370698250158120"
+      name: announcements
+      delay: 20
+      enabled: false
+    - id: "738386549795979295"
+      name: general
+      delay: 20
+      enabled: false
+    - id: "738738939241693265"
+      name: videos
+      delay: 20
+      enabled: false
+    - id: "740137103769468929"
+      name: jokes-memes
+      delay: 20
+      enabled: false
+    - id: "740425568478167071"
+      name: osat
+      delay: 20
+      enabled: false
+    - id: "740425896812478525"
+      name: random-shit
+      delay: 20
+      enabled: false
+    - id: "740769872618848348"
+      name: hindi
+      delay: 20
+      enabled: false
+    - id: "742079563420401716"
+      name: what-is-this
+      delay: 20
+      enabled: false
+    - id: "745519252726874142"
+      name: roles
+      delay: 20
+      enabled: false
+    - id: "745525899310399539"
+      name: commands
+      delay: 20
+      enabled: false
+    - id: "752440572622536754"
+      name: pokecord
+      delay: 5
+      enabled: true
+  - id: "751356637377462383"
+    name: APJ Prefectorial Board
+    prefix: p!
+    delay: 5
+    enabled: false
+    channels:
+    - id: "751356637377462386"
+      name: welcome
+      delay: 20
+      enabled: false
+    - id: "751356815048179742"
+      name: announcements
+      delay: 20
+      enabled: false
+    - id: "751356844773081150"
+      name: general
+      delay: 20
+      enabled: false
+    - id: "751373400772968468"
+      name: information
+      delay: 20
+      enabled: false
+    - id: "751374072557994015"
+      name: chat
+      delay: 20
+      enabled: false
+    - id: "751374182641827861"
+      name: chat
+      delay: 20
+      enabled: false
+    - id: "751374243455041617"
+      name: chat
+      delay: 20
+      enabled: false
+    - id: "751374283179032646"
+      name: chat
+      delay: 20
+      enabled: false
+    - id: "751381312518225920"
+      name: faqs
+      delay: 20
+      enabled: false
+  - id: "752744412148269118"
+    name: CatlynMeow's server
+    prefix: p!
+    delay: 5
+    enabled: false
+    channels:
+    - id: "752744412148269121"
+      name: general
+      delay: 20
+      enabled: false
