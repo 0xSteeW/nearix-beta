@@ -24,32 +24,24 @@ import (
 // receive grabs url of Pokemon picture
 func receive(url string) string {
 	pokemons := make(map[string]string)
-	err := Download("images/template.jpg", url)
-	logErr(err)
-	hash := Hash("images/template.jpg")
+	img := Download(url)
+	hash := Hash(img)
 	readPokemonList(pokemons)
 	pokemonName := Compare(hash, pokemons)
 	return (pokemonName)
 }
 
-// Download grabs Pokemon Picture from recieve url
-func Download(path string, url string) error {
+// Download grabs Pokemon Picture from receive url
+func Download(url string) *image.Image {
 	response, err := http.Get(url)
-	logErr(err)
-	var output *os.File
-
-	if _, _ = os.Stat(path); os.IsNotExist(err) {
-		output, _ = os.Create(path)
-		defer output.Close()
-	} else {
-		_ = os.Remove(path)
-		output, _ = os.Create(path)
-		defer output.Close()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
-	// copy contents of response to output
-	_, err = io.Copy(output, response.Body)
 	defer response.Body.Close()
-	return err
+	// Body is a io ReadCloser, so we can pass it to image.Decode, which receives an io.Reader
+	decoded, _, err := image.Decode(response.Body)
+	return &decoded
 }
 
 // readPokemonList reads hash list
@@ -73,18 +65,10 @@ func Compare(hash string, pokemonStruct map[string]string) string {
 }
 
 // Hash grabs value from Download
-func Hash(path string) string {
-	output, err := os.Open(path)
-	logErr(err)
-	imageFile, _, err := image.Decode(output)
+func Hash(imageDecoder *image.Image) string {
+	hash, err := goimagehash.PerceptionHash(*imageDecoder)
 	if err != nil {
-		log.Println("Couldn't read image file")
-	}
-	hash, err := goimagehash.PerceptionHash(imageFile)
-	if err != nil {
-		log.Panic("Couldn't get hash")
+		log.Panic("Could not get the hash of last pokemon")
 	}
 	return hash.ToString()
 }
-
-// ENDOF function definition
