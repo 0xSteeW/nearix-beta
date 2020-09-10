@@ -8,22 +8,22 @@ Aggron: 84ca6fa43c3e3479
 Aipom: 91a42c6ee2919cef
 Alakazam: 918c6e322ff1c98d
 Alcremie: cf6c2ce1321b7193
-Alolaniglett: ce6c31c33ec6cd18
-Alolanugtrio: d05a6f2d30d22767
-Alolanxeggutor: 9cc69a3667306799
-Alolaneodude: 94346fcbd9699036
-Alolanolem: 974969b2b0963ce6
-Alolanraveler: c98f7c7083a5945e
-Alolanarowak: c66739cc183865cf
-Alolaneowth: cd9e3461329ec39c
-Alolaninetales: c1373e68b785c0da
-Alolanersian: c3993c6662c7b98c
-Alolanaichu: 98666695699b61cb
-Alolanaticate: c5603a1fe0c39e3d
-Alolanattata: c62538d2cb2db1d3
-Alolanandshrew: 96b12be26d0ec9f0
-Alolanandslash: 9b3b3cc16646853e
-Alolanulpix: 87436a9d33727169
+Alolan Diglett: ce6c31c33ec6cd18
+Alolan Dugtrio: d05a6f2d30d22767
+Alolan Exeggutor: 9cc69a3667306799
+Alolan Geodude: 94346fcbd9699036
+Alolan Golem: 974969b2b0963ce6
+Alolan Graveler: c98f7c7083a5945e
+Alolan Marowak: c66739cc183865cf
+Alolan Meowth: cd9e3461329ec39c
+Alolan Ninetales: c1373e68b785c0da
+Alolan Persian: c3993c6662c7b98c
+Alolan Raichu: 98666695699b61cb
+Alolan Raticate: c5603a1fe0c39e3d
+Alolan Rattata: c62538d2cb2db1d3
+Alolan Sandshrew: 96b12be26d0ec9f0
+Alolan Sandslash: 9b3b3cc16646853e
+Alolan Vulpix: 87436a9d33727169
 Alomomola: cd93303431cd67cd
 Altaria: c22e3dd2314b6e3c
 Amaura: cc643398399787e3
@@ -257,7 +257,7 @@ Exeggcute: 91862e78ed0dc1cf
 Exeggutor: 9b61361867966cce
 Exploud: c1ec6f5a34a1b970
 Falinks: d1376ac8a5277cc1
-Farfetch: 9fe970b42d1a3686
+Farfetch'd: 9fe970b42d1a3686
 Fearow: 94a66b5b7234a13b
 Feebas: 9e69799663cc2ce0
 Fennekin: 9bb3314c34cd6731
@@ -266,7 +266,7 @@ Ferroseed: 939979616587b6c8
 Ferrothorn: 94256f9e72789625
 Finneon: 963768c827ec19e5
 Flaaffy: c7c0369f381a3d3c
-Flab: 9ccc7bc3606a6c39
+Flabébé: 9ccc7bc3606a6c39
 Flapple: c6b66c4933879738
 Flareon: 80316f4edcf0939e
 Fletchinder: c7b53c4bca494336
@@ -342,7 +342,7 @@ Gumshoos: 96366dc87b498935
 Gurdurr: 9ae768386697299c
 Guzzlord: 9560669e78b98766
 Gyarados: cccb331c32e4c9b3
-Hakamo: cd197a86326a27e6
+Hakamo-o: cd197a86326a27e6
 Happiny: 9b3034c366cc6d6d
 Hariyama: c0e53bd0363f0736
 Hatenna: 9b3b26c44937c36c
@@ -362,7 +362,7 @@ Hippowdon: c66e3b913a0da56a
 Hitmonchan: 9b9267693c3c2c9c
 Hitmonlee: c7c1387b1a9cb1ac
 Hitmontop: c1723be43e0e3726
-Hoh: c031718c1fe31ede
+Ho-Oh: c031718c1fe31ede
 Honchkrow: d8c873378ccc7133
 Honedge: cb6c31936cc33666
 Hoopa: 916c6993c6e66c99
@@ -383,7 +383,7 @@ Infernape: 84cb32b47927ef48
 Inkay: c1cf2cb436b41778
 Inteleon: 99993399336663b2
 Ivysaur: 957c6e0f31e17213
-Jangmo: c6e43a1f376058b3
+Jangmo-o: c6e43a1f376058b3
 Jellicent: d4332bdc9363e41a
 Jigglypuff: c22f2b66349396d9
 Jirachi: c44b3db463c24b3d
@@ -409,7 +409,7 @@ Klink: d0c46e1d1e367d43
 Klinklang: c1c33f3cd64ac1e1
 Koffing: c0bd705a4f848fad
 Komala: c1962e68789f95e4
-Kommo: c72738d80963b69d
+Kommo-o: c72738d80963b69d
 Krabby: d0323fcde461c3d2
 Kricketot: cf3231cd33969638
 Kricketune: cc63639e31347ccc
@@ -503,7 +503,7 @@ Mightyena: c2f03c8f4b391ec6
 Milcery: 9b7064cf97e1c838
 Milotic: c4376bd82f84b3c1
 Miltank: c7656c963369b18c
-Mimer: cf663193e4982e6c
+Mime Jr.: cf663193e4982e6c
 Mimikyu: cc3163ce33cd34c9
 Minccino: c1f83a252dcf254b
 Minior: 8c6379cc6197933c
@@ -516,8 +516,8 @@ Morelull: c99b323c6766cc38
 Morgrem: cd993334786785c9
 Morpeko: cf33319c34cccc33
 Mothim: c0f43f0b92b0ed4e
-MrMime: c4c872373f335a0d
-MrRime: c5cc63373c3398c9
+Mr. Mime: c4c872373f335a0d
+Mr. Rime: c5cc63373c3398c9
 Mudbray: c663349869e63b9c
 Mudkip: c56e7a95295a30b9
 Mudsdale: 933d3dc24c4d3678
@@ -600,7 +600,7 @@ Ponyta: c665789d1c3631e9
 Poochyena: c0636d9d1a78a74e
 Popplio: 909b256d6ba61a97
 Porygon: c4cc3f9d78308763
-Porygon: 938c2c6b6372369e
+Porygon-Z: 938c2c6b6372369e
 Primarina: ce1c33e3616798c3
 Primeape: ce58278576cbb870
 Prinplup: cd1c33c931337ab1
@@ -702,7 +702,7 @@ Simipour: ca956e68350f68f2
 Simisage: c66e3b94b1593439
 Simisear: 95e87a3c690b74f0
 Sinistea: 96a5695ac6e99394
-Sirfetch: ce73319c31ce3319
+Sirfetch'd: ce73319c31ce3319
 Sizzlipede: 95366ec991b44e4b
 Skarmory: c5b33a0e4ef1c193
 Skiddo: c3d03f3c38c66687
@@ -775,10 +775,10 @@ Taillow: c1703f8f783cc370
 Talonflame: c3783c87cb7970a4
 Tangela: c55a2f957ca53161
 Tangrowth: cf6c34cb3c9c7031
-Tapuulu: 99c6313e6c49e693
-Tapuini: cf6630e361d9c338
-Tapuoko: 9ac36d6c33313c3a
-Tapuele: 9b492c96333367c3
+Tapu Bulu: 99c6313e6c49e693
+Tapu Fini: cf6630e361d9c338
+Tapu Koko: 9ac36d6c33313c3a
+Tapu Lele: 9b492c96333367c3
 Tauros: c86b3f90d3cf0e30
 Teddiursa: cec7303265699d9c
 Tentacool: 9e8f71308f63039e
@@ -818,7 +818,6 @@ Turtonator: c7943479696b58c5
 Turtwig: cf6c3ec3618e6131
 Tympole: 9acd7a382d956532
 Tynamo: d0c22d351adadd4e
-ype: ull: 99992e6d61363696
 Typhlosion: cf4c32c364c36d3c
 Tyranitar: cf4336a760b03b1d
 Tyrantrum: c9c53f1a66e5cc81
@@ -898,26 +897,27 @@ Zorua: c4c4385b3b3d96d1
 Zubat: 85c26a3dbd1a63f0
 Zweilous: c169360f3c946fd8
 Zygarde: c57836a57ab16cd0
-alolanrimer: 9e6b35b460e10ece
-alolanuk: d0683c97874adcbc
+alolan grimer: 9e6b35b460e10ece
+alolan muk: d0683c97874adcbc
 eevee: c7307bc1b40fcad2
-galarianorsola: 9b67249ccb639626
-galarianarmanitan: cfd93494792430f3
-galarianarumaka: 9a6669998739cb92
-galarianarfetch: c670388fc760f8dc
-galarianinoone: 90c8693797cfc9e0
-galarianeowth: dbce3538c2879e84
-galarianrmime: d98633621e9f6159
-galarianonyta: c7c3793c909bc266
-galarianapidash: c66f3d9219b560c9
-galarianlowbro: c54f6ab0366b2c78
-galarianlowpoke: c00f3ff0d00f4fb4
-galariantunfisk: 9b3a64c59a3ac5e2
-galarianeezing: c39e3cc9783e3360
-galarianamask: 9862279f63c89c37
-galarianigzagoon: c4c83f36b3688cc7
+galarian corsola: 9b67249ccb639626
+galarian darmanitan: cfd93494792430f3
+galarian darumaka: 9a6669998739cb92
+galarian farfetchd: c670388fc760f8dc
+galarian linoone: 90c8693797cfc9e0
+galarian meowth: dbce3538c2879e84
+galarian mr. mime: d98633621e9f6159
+galarian ponyta: c7c3793c909bc266
+galarian rapidash: c66f3d9219b560c9
+galarian slowbro: c54f6ab0366b2c78
+galarian slowpoke: c00f3ff0d00f4fb4
+galarian stunfisk: 9b3a64c59a3ac5e2
+galarian weezing: c39e3cc9783e3360
+galarian yamask: 9862279f63c89c37
+galarian zigzagoon: c4c83f36b3688cc7
 kubfu: cfd8613c342369c7
 porygon2: d13134ca2f276787
-sunglassesquirtle: c1667e862f58d239
+sunglasses squirtle: c1667e862f58d239
 urshifu: cb6d321ac1c76636
 zarude: d061671e1f966971
+

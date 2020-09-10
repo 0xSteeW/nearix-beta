@@ -7,6 +7,7 @@ require (
 	github.com/bwmarrin/discordgo v0.20.2
 	github.com/corona10/goimagehash v1.0.2
 	github.com/lib/pq v1.3.0 // indirect
+	github.com/oliamb/cutter v0.2.2 // indirect
 	github.com/rhysd/go-github-selfupdate v1.2.1
 	github.com/shuLhan/go-bindata v3.4.0+incompatible // indirect
 	github.com/zserge/webview v0.0.0-20200121135717-9c1b0a888aa4
