@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"io/ioutil"
 	"math"
 	"net/http"
@@ -150,10 +151,10 @@ func Hash(imageDecoder image.Image) *goimagehash.ImageHash {
 	return hash
 }
 func CropUselessArea(img *image.Image) image.Image {
-	topLeft, bottomRight := FindVisibleVertexes(*img)
+	topLeft, bottomRight, transparent := FindVisibleVertexes(*img)
 	size := image.Point{X: bottomRight.X - topLeft.X, Y: bottomRight.Y - topLeft.Y}
 	fmt.Println(size)
-	newImg, _ := cutter.Crop(*img, cutter.Config{
+	newImg, _ := cutter.Crop(transparent, cutter.Config{
 		Width:  size.X,
 		Height: size.Y,
 		Anchor: topLeft,
@@ -162,11 +163,15 @@ func CropUselessArea(img *image.Image) image.Image {
 	return newImg
 }
 
-func FindVisibleVertexes(img image.Image) (image.Point, image.Point) {
+func FindVisibleVertexes(img image.Image) (image.Point, image.Point, image.Image) {
 	var COLOR_TRESHOLD int8 = 50
 	// Iterate over img.At(), because it gives a color.Color object. Test if that color.Color is not empty, and seek for the nearest to each border.
 	sizeX := img.Bounds().Max.X
 	sizeY := img.Bounds().Max.Y
+
+	// Create a new RGBA image, make a copy of img, but remove any pixel with alpha < COLOR_TRESHOLD
+	transparent := image.NewRGBA(img.Bounds())
+
 	// First get top left vertex, starting from left border
 	fmt.Printf("Size: %d,%d\n", sizeX, sizeY)
 	var currentLowest int
@@ -186,12 +191,15 @@ func FindVisibleVertexes(img image.Image) (image.Point, image.Point) {
 			c := img.At(pixel, row)
 			_, _, _, alpha := c.RGBA()
 			if int8(alpha) > COLOR_TRESHOLD {
+				transparent.Set(pixel, row, color.Transparent)
 				// Found non-transparent pixel, check if the distance from lowest is less
 				if pixel < currentLowest {
 					currentLowest = pixel
 					currentVertex = image.Point{X: pixel, Y: row}
 				}
 				// Break current column after having found non-transparent pixel
+			} else {
+				transparent.Set(pixel, row, c)
 			}
 
 		}
@@ -210,11 +218,14 @@ func FindVisibleVertexes(img image.Image) (image.Point, image.Point) {
 			c := img.At(column, pixel)
 			_, _, _, alpha := c.RGBA()
 			if int8(alpha) > COLOR_TRESHOLD {
+				transparent.Set(column, pixel, color.Transparent)
 				// Found non-transparent pixel, check if the distance from lowest is less
 				if pixel < currentLowest {
 					currentLowest = pixel
 					currentVertex = image.Point{X: column, Y: pixel}
 				}
+			} else {
+				transparent.Set(column, pixel, c)
 			}
 
 		}
@@ -232,12 +243,15 @@ func FindVisibleVertexes(img image.Image) (image.Point, image.Point) {
 			c := img.At(pixel, row)
 			_, _, _, alpha := c.RGBA()
 			if int8(alpha) > COLOR_TRESHOLD {
+				transparent.Set(sizeX-1-pixel, row, color.Transparent)
 				// Found non-transparent pixel, check if the distance from lowest is less
 				if pixel < currentLowest {
 					currentLowest = pixel
 					currentVertex = image.Point{X: sizeX - 1 - pixel, Y: row}
 				}
 				// Break current column after having found non-transparent pixel
+			} else {
+				transparent.Set(sizeX-1-pixel, row, c)
 			}
 
 		}
@@ -256,16 +270,19 @@ func FindVisibleVertexes(img image.Image) (image.Point, image.Point) {
 			c := img.At(column, pixel)
 			_, _, _, alpha := c.RGBA()
 			if int8(alpha) > COLOR_TRESHOLD {
+				transparent.Set(column, sizeY-1-pixel, color.Transparent)
 				// Found non-transparent pixel, check if the distance from lowest is less
 				if pixel < currentLowest {
 					currentLowest = pixel
 					currentVertex = image.Point{X: column, Y: sizeY - 1 - pixel}
 				}
+			} else {
+				transparent.Set(column, sizeY-1-pixel, c)
 			}
 
 		}
 	}
 	bottomRight.Y = currentVertex.Y
 
-	return topLeft, bottomRight
+	return topLeft, bottomRight, transparent
 }
