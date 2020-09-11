@@ -2,12 +2,12 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"io/ioutil"
-	"strconv"
-	"fmt"
-	"net/http"
 	"math"
+	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/corona10/goimagehash"
@@ -24,8 +24,7 @@ import (
 func receive(url string) string {
 	pokemons := make(map[string]string)
 	img := Download(url)
-	CropUselessArea(img)
-	hash := Hash(img)
+	hash := Hash(CropUselessArea(img))
 	readPokemonList(&pokemons)
 	pokemonName := Compare(hash, pokemons)
 	return (pokemonName)
@@ -62,16 +61,16 @@ func Compare(hash *goimagehash.ImageHash, pokemonStruct map[string]string) strin
 	var similar []string
 	var similarLastDistance int
 	for pokemon, pokemonHash := range pokemonStruct {
-		distance := HammingDistance(strings.Replace(hash.ToString(),"p:","",1), pokemonHash)
+		distance := HammingDistance(strings.Replace(hash.ToString(), "p:", "", 1), pokemonHash)
 		if distance == -1 {
 			continue
 		}
 		if distance < lowestHamming {
 			lowestHamming = distance
 			lowestHammingPokemon = pokemon
-			fmt.Printf("Current lowest: %s :%d\n",pokemon,distance)
+			fmt.Printf("Current lowest: %s :%d\n", pokemon, distance)
 		} else if distance == lowestHamming {
-			fmt.Println("Same distance: "+ pokemon)
+			fmt.Println("Same distance: " + pokemon)
 			if distance == similarLastDistance {
 				similar = append(similar, pokemon)
 			} else {
@@ -88,39 +87,19 @@ func Compare(hash *goimagehash.ImageHash, pokemonStruct map[string]string) strin
 
 func SplitInPairs(s string) []int64 {
 	var pairs []int64
-	for i, char := range s  {
-		if (i+1) % 2 == 0 {
-			pair, _ := strconv.ParseInt(fmt.Sprintf("%d%d", char, s[i-1]), 10,64)
-			pairs = append(pairs,pair)
+	for i, char := range s {
+		if (i+1)%2 == 0 {
+			pair, _ := strconv.ParseInt(fmt.Sprintf("%d%d", char, s[i-1]), 10, 64)
+			pairs = append(pairs, pair)
 		}
 	}
 	return pairs
 }
 
-func CropUselessArea(img *image.Image) {
-	topLeft, size := FindVisibleVertexes(*img)
-	newImg, _ := cutter.Crop(*img, cutter.Config{
-		Width: size.X,
-		Height: size.Y,
-		Anchor: topLeft,
-		Mode: cutter.TopLeft,
-	})
-	img = &newImg
-}
+func HammingDistance(originalHash, probableHash string) int {
 
-func FindVisibleVertexes(img image.Image) (image.Point, image.Point) {
-	// Bounds returns a rectangle with the shape fit inside
-	bounds := img.Bounds()
-	// Get the top left pixel
-	topLeft := image.Point{X:bounds.Min.X,Y: bounds.Min.Y}
-	size := bounds.Size()
-	return topLeft, size
-}
-
-func HammingDistance(originalHash , probableHash string) int {
-
-	originalHash = strings.Replace(originalHash,"\n","",1)
-	probableHash = strings.Replace(probableHash,"\n","",1)
+	originalHash = strings.Replace(originalHash, "\n", "", 1)
+	probableHash = strings.Replace(probableHash, "\n", "", 1)
 	pairsOriginal := SplitInPairs(originalHash)
 	pairsProbable := SplitInPairs(probableHash)
 
@@ -132,7 +111,7 @@ func HammingDistance(originalHash , probableHash string) int {
 			// Perform bitwise AND to check each bit
 			checkParticularBitOriginal := currentPairOriginal & int64(math.Pow(2, float64(bit)))
 			checkParticularBitProbable := currentPairProbable & int64(math.Pow(2, float64(bit)))
-			if checkParticularBitProbable ^ checkParticularBitOriginal != 0 {
+			if checkParticularBitProbable^checkParticularBitOriginal != 0 {
 				hamming += 1
 			}
 
@@ -160,13 +139,133 @@ func HammingDistance(originalHash , probableHash string) int {
 }
 
 // Hash grabs value from Download
-func Hash(imageDecoder *image.Image) *goimagehash.ImageHash {
+func Hash(imageDecoder image.Image) *goimagehash.ImageHash {
 	if imageDecoder == nil {
 		return nil
 	}
-	hash, err := goimagehash.PerceptionHash(*imageDecoder)
+	hash, err := goimagehash.PerceptionHash(imageDecoder)
 	if err != nil {
 		return nil
 	}
 	return hash
+}
+func CropUselessArea(img *image.Image) image.Image {
+	topLeft, bottomRight := FindVisibleVertexes(*img)
+	size := image.Point{X: bottomRight.X - topLeft.X, Y: bottomRight.Y - topLeft.Y}
+	fmt.Println(size)
+	newImg, _ := cutter.Crop(*img, cutter.Config{
+		Width:  size.X,
+		Height: size.Y,
+		Anchor: topLeft,
+		Mode:   cutter.TopLeft,
+	})
+	return newImg
+}
+
+func FindVisibleVertexes(img image.Image) (image.Point, image.Point) {
+	var COLOR_TRESHOLD int8 = 50
+	// Iterate over img.At(), because it gives a color.Color object. Test if that color.Color is not empty, and seek for the nearest to each border.
+	sizeX := img.Bounds().Max.X
+	sizeY := img.Bounds().Max.Y
+	// First get top left vertex, starting from left border
+	fmt.Printf("Size: %d,%d\n", sizeX, sizeY)
+	var currentLowest int
+	var currentVertex image.Point
+	var topLeft image.Point
+	var bottomRight image.Point
+	// sizeX < sizeY ? sizeY+1 : sizeX+1 , assign whichever is higer, and to the max size of the image, so no value can be higher than currentLowest
+	if sizeX < sizeY {
+		currentLowest = sizeY + 1
+	} else {
+		currentLowest = sizeX + 1
+	}
+
+	// Left border
+	for row := 0; row < sizeY; row++ {
+		for pixel := 0; pixel < sizeX; pixel++ {
+			c := img.At(pixel, row)
+			_, _, _, alpha := c.RGBA()
+			if int8(alpha) > COLOR_TRESHOLD {
+				// Found non-transparent pixel, check if the distance from lowest is less
+				if pixel < currentLowest {
+					currentLowest = pixel
+					currentVertex = image.Point{X: pixel, Y: row}
+				}
+				// Break current column after having found non-transparent pixel
+			}
+
+		}
+	}
+	topLeft.X = currentVertex.X
+
+	if sizeX < sizeY {
+		currentLowest = sizeY + 1
+	} else {
+		currentLowest = sizeX + 1
+	}
+	currentVertex = image.Point{0, 0}
+	// Top border
+	for column := 0; column < sizeX; column++ {
+		for pixel := 0; pixel < sizeY; pixel++ {
+			c := img.At(column, pixel)
+			_, _, _, alpha := c.RGBA()
+			if int8(alpha) > COLOR_TRESHOLD {
+				// Found non-transparent pixel, check if the distance from lowest is less
+				if pixel < currentLowest {
+					currentLowest = pixel
+					currentVertex = image.Point{X: column, Y: pixel}
+				}
+			}
+
+		}
+	}
+	topLeft.Y = currentVertex.Y
+	if sizeX < sizeY {
+		currentLowest = sizeY + 1
+	} else {
+		currentLowest = sizeX + 1
+	}
+	// Right
+	for row := 0; row < sizeY; row++ {
+		// Just change the pixel direction (y stays)
+		for pixel := sizeX - 1; pixel >= 0; pixel-- {
+			c := img.At(pixel, row)
+			_, _, _, alpha := c.RGBA()
+			if int8(alpha) > COLOR_TRESHOLD {
+				// Found non-transparent pixel, check if the distance from lowest is less
+				if pixel < currentLowest {
+					currentLowest = pixel
+					currentVertex = image.Point{X: sizeX - 1 - pixel, Y: row}
+				}
+				// Break current column after having found non-transparent pixel
+			}
+
+		}
+	}
+	bottomRight.X = currentVertex.X
+	if sizeX < sizeY {
+		currentLowest = sizeY + 1
+	} else {
+		currentLowest = sizeX + 1
+	}
+	currentVertex = image.Point{0, 0}
+
+	// Bottom
+	for column := 0; column < sizeX; column++ {
+		for pixel := sizeY - 1; pixel >= 0; pixel-- {
+			c := img.At(column, pixel)
+			_, _, _, alpha := c.RGBA()
+			if int8(alpha) > COLOR_TRESHOLD {
+				// Found non-transparent pixel, check if the distance from lowest is less
+				if pixel < currentLowest {
+					currentLowest = pixel
+					currentVertex = image.Point{X: column, Y: sizeY - 1 - pixel}
+				}
+			}
+
+		}
+	}
+	bottomRight.Y = currentVertex.Y
+
+	return topLeft, bottomRight
 }
