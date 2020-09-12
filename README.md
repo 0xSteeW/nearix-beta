@@ -1,8 +1,9 @@
-# Update: You can use this app for some pokecord-like bots like PokeRealm. Just edit config/config.yaml and change "pokecordid" to the specific bot's ID. This is not guaranteed to work with other bots.
+# Nearix-beta
 
-Just download the latest release from here: https://github.com/0xSteeW/nearix-beta/releases
+This bot still works for some pokecord clones. Not guaranteed to work with all, and its not 100% effective in the catches (but still has a very high rate). Catching is being improved.
 
-Setup:
-Download the release that fits your operating system (ex.: windows-amd64 for 64 bit windows). If your operating system or architecture is not on the list please contact me so I  can build it for you.
+Disclaimer: I am not responsible for any bans or blacklists.
 
-For launching the program just open the executable you downloaded (ex.: nearix-windows-amd64.exe) and proceed with the setup.
+To use this bot simply download the executable that fits your OS from https://github.com/0xSteeW/nearix-beta/releases
+
+Last update: 12/09/2020
