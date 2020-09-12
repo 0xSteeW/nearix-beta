@@ -2,7 +2,7 @@ token:
 constants:
   pokecordid: "665301904791699476"
   language: EN
-  first: true 
-version: 2.3.0
+  first: true
+version: 3.0.0
 session:
   guilds:

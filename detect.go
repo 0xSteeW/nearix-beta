@@ -25,9 +25,9 @@ import (
 func receive(url string) string {
 	pokemons := make(map[string][]string)
 	img := Download(url)
-	hash := Hash(CropUselessArea(img))
+	phash, dhash := Hash(CropUselessArea(img))
 	readPokemonList(&pokemons)
-	pokemonName := Compare(hash, pokemons)
+	pokemonName := Compare(phash,dhash, pokemons)
 	return (pokemonName)
 }
 
@@ -56,7 +56,7 @@ func readPokemonList(pokemonStruct *map[string][]string) {
 }
 
 // Compare checks hash to hash list
-func Compare(hash *goimagehash.ImageHash, pokemonStruct map[string][]string) string {
+func Compare(phash *goimagehash.ImageHash, dhash *goimagehash.ImageHash ,pokemonStruct map[string][]string) string {
 	lowestpHamming := 100
 	lowestdHamming := 100
 	var lowestHammingPokemon string
@@ -68,14 +68,18 @@ func Compare(hash *goimagehash.ImageHash, pokemonStruct map[string][]string) str
 	var dsimilar []string
 	var dsimilarLastDistance int
 	for pokemon, pokemonHashes := range pokemonStruct {
-		pdistance := HammingDistance(strings.Replace(hash.ToString(), "p:", "", 1), pokemonHashes[0])
-		ddistance := HammingDistance(strings.Replace(hash.ToString(), "d:", "", 1), pokemonHashes[1])
+
+		//pdistance := HammingDistance(strings.Replace(phash.ToString(), "p:", "", 1), pokemonHashes[0])
+		//ddistance := HammingDistance(strings.Replace(dhash.ToString(), "d:", "", 1), pokemonHashes[1])
+		pstringhash,_ := goimagehash.ImageHashFromString(pokemonHashes[0])
+		dstringhash,_ := goimagehash.ImageHashFromString(pokemonHashes[1])
+		pdistance,_ := pstringhash.Distance(phash)
+		ddistance,_ := dstringhash.Distance(dhash)
+
 		if pdistance < lowestpHamming {
 			lowestpHamming = pdistance
 			lowestpHammingPokemon = pokemon
-			fmt.Printf("Current lowest: %s :%d\n", pokemon, pdistance)
 		} else if pdistance == lowestpHamming {
-			fmt.Println("Same distance: " + pokemon)
 			if pdistance == psimilarLastDistance {
 				psimilar = append(psimilar, pokemon)
 			} else {
@@ -87,15 +91,20 @@ func Compare(hash *goimagehash.ImageHash, pokemonStruct map[string][]string) str
 		if ddistance < lowestdHamming {
 			lowestdHamming = ddistance
 			lowestdHammingPokemon = pokemon
-			fmt.Printf("Current lowest: %s :%d\n", pokemon, ddistance)
 		} else if ddistance == lowestdHamming {
-			fmt.Println("Same distance: " + pokemon)
 			if ddistance == dsimilarLastDistance {
 				dsimilar = append(dsimilar, pokemon)
 			} else {
 				dsimilarLastDistance = ddistance
 				dsimilar = nil
 				dsimilar = append(dsimilar, pokemon)
+			}
+		}
+		if lowestpHamming <= 5 || lowestdHamming <= 5 {
+			if lowestpHamming < 5 {
+				lowestHammingPokemon = lowestpHammingPokemon
+			} else {
+				lowestHammingPokemon = lowestdHammingPokemon
 			}
 		}
 		if lowestpHammingPokemon == lowestdHammingPokemon {
@@ -106,6 +115,7 @@ func Compare(hash *goimagehash.ImageHash, pokemonStruct map[string][]string) str
 			lowestHammingPokemon = lowestdHammingPokemon
 		}
 	}
+	fmt.Println(lowestHammingPokemon)
 	return lowestHammingPokemon
 }
 
@@ -163,15 +173,16 @@ func HammingDistance(originalHash, probableHash string) int {
 }
 
 // Hash grabs value from Download
-func Hash(imageDecoder image.Image) *goimagehash.ImageHash {
+func Hash(imageDecoder image.Image) (*goimagehash.ImageHash, *goimagehash.ImageHash) {
 	if imageDecoder == nil {
-		return nil
+		return nil, nil
 	}
-	hash, err := goimagehash.PerceptionHash(imageDecoder)
+	phash, err := goimagehash.PerceptionHash(imageDecoder)
+	dhash, err := goimagehash.DifferenceHash(imageDecoder)
 	if err != nil {
-		return nil
+		return nil, nil
 	}
-	return hash
+	return phash, dhash
 }
 func CropUselessArea(img *image.Image) image.Image {
 	topLeft, bottomRight, transparent := FindVisibleVertexes(*img)
