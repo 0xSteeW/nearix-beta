@@ -23,7 +23,7 @@ import (
 // BEGIN function definition
 // receive grabs url of Pokemon picture
 func receive(url string) string {
-	pokemons := make(map[string]string)
+	pokemons := make(map[string][]string)
 	img := Download(url)
 	hash := Hash(CropUselessArea(img))
 	readPokemonList(&pokemons)
@@ -44,7 +44,7 @@ func Download(url string) *image.Image {
 }
 
 // readPokemonList reads hash list
-func readPokemonList(pokemonStruct *map[string]string) {
+func readPokemonList(pokemonStruct *map[string][]string) {
 	reader, err := ioutil.ReadFile("config/hashes.yaml")
 	if err != nil {
 		fmt.Println(err)
@@ -56,33 +56,56 @@ func readPokemonList(pokemonStruct *map[string]string) {
 }
 
 // Compare checks hash to hash list
-func Compare(hash *goimagehash.ImageHash, pokemonStruct map[string]string) string {
-	lowestHamming := 100
+func Compare(hash *goimagehash.ImageHash, pokemonStruct map[string][]string) string {
+	lowestpHamming := 100
+	lowestdHamming := 100
 	var lowestHammingPokemon string
-	var similar []string
-	var similarLastDistance int
-	for pokemon, pokemonHash := range pokemonStruct {
-		distance := HammingDistance(strings.Replace(hash.ToString(), "p:", "", 1), pokemonHash)
-		if distance == -1 {
-			continue
-		}
-		if distance < lowestHamming {
-			lowestHamming = distance
-			lowestHammingPokemon = pokemon
-			fmt.Printf("Current lowest: %s :%d\n", pokemon, distance)
-		} else if distance == lowestHamming {
+	var lowestpHammingPokemon string
+	var psimilar []string
+	var psimilarLastDistance int
+	//
+	var lowestdHammingPokemon string
+	var dsimilar []string
+	var dsimilarLastDistance int
+	for pokemon, pokemonHashes := range pokemonStruct {
+		pdistance := HammingDistance(strings.Replace(hash.ToString(), "p:", "", 1), pokemonHashes[0])
+		ddistance := HammingDistance(strings.Replace(hash.ToString(), "d:", "", 1), pokemonHashes[1])
+		if pdistance < lowestpHamming {
+			lowestpHamming = pdistance
+			lowestpHammingPokemon = pokemon
+			fmt.Printf("Current lowest: %s :%d\n", pokemon, pdistance)
+		} else if pdistance == lowestpHamming {
 			fmt.Println("Same distance: " + pokemon)
-			if distance == similarLastDistance {
-				similar = append(similar, pokemon)
+			if pdistance == psimilarLastDistance {
+				psimilar = append(psimilar, pokemon)
 			} else {
-				similarLastDistance = distance
-				similar = nil
-				similar = append(similar, pokemon)
+				psimilarLastDistance = pdistance
+				psimilar = nil
+				psimilar = append(psimilar, pokemon)
 			}
 		}
+		if ddistance < lowestdHamming {
+			lowestdHamming = ddistance
+			lowestdHammingPokemon = pokemon
+			fmt.Printf("Current lowest: %s :%d\n", pokemon, ddistance)
+		} else if ddistance == lowestdHamming {
+			fmt.Println("Same distance: " + pokemon)
+			if ddistance == dsimilarLastDistance {
+				dsimilar = append(dsimilar, pokemon)
+			} else {
+				dsimilarLastDistance = ddistance
+				dsimilar = nil
+				dsimilar = append(dsimilar, pokemon)
+			}
+		}
+		if lowestpHammingPokemon == lowestdHammingPokemon {
+			lowestHammingPokemon = lowestpHammingPokemon
+		} else if lowestpHamming < lowestdHamming {
+			lowestHammingPokemon = lowestpHammingPokemon
+		} else {
+			lowestHammingPokemon = lowestdHammingPokemon
+		}
 	}
-	fmt.Printf("Lowest hamming distance: %d, Pokemon: %s\n", lowestHamming, lowestHammingPokemon)
-	fmt.Println(similar)
 	return lowestHammingPokemon
 }
 
@@ -90,7 +113,7 @@ func SplitInPairs(s string) []int64 {
 	var pairs []int64
 	for i, char := range s {
 		if (i+1)%2 == 0 {
-			pair, _ := strconv.ParseInt(fmt.Sprintf("%d%d", char, s[i-1]), 10, 64)
+			pair, _ := strconv.ParseInt(fmt.Sprintf("%d%d", char, s[i-1]), 16, 64)
 			pairs = append(pairs, pair)
 		}
 	}
